@@ -1,0 +1,217 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost
+-- Tiempo de generación: 11-10-2019 a las 13:38:46
+-- Versión del servidor: 10.4.6-MariaDB
+-- Versión de PHP: 7.1.32
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `amazon`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `autor`
+--
+
+CREATE TABLE `autor` (
+  `autor_id` int(11) NOT NULL,
+  `autor_address` varchar(100) NOT NULL,
+  `books_quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `autor`
+--
+
+INSERT INTO `autor` (`autor_id`, `autor_address`, `books_quantity`) VALUES
+(1, 'Jose Martinez', 2),
+(2, 'María López', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `books`
+--
+
+CREATE TABLE `books` (
+  `book_id` int(11) NOT NULL,
+  `book_name` varchar(100) NOT NULL,
+  `autor_id` int(11) NOT NULL,
+  `book_price` int(4) NOT NULL,
+  `stock` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `books`
+--
+
+INSERT INTO `books` (`book_id`, `book_name`, `autor_id`, `book_price`, `stock`) VALUES
+(1, 'Html básico', 1, 15, 100),
+(2, 'Html avanzado', 1, 20, 100),
+(3, 'Matemática básica', 2, 20, 50),
+(4, 'Física Básica', 2, 18, 60),
+(5, 'Química bäsica', 2, 17, 62);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `invoice_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `invoice_amount` int(11) NOT NULL,
+  `invoice_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `order_list`
+--
+
+CREATE TABLE `order_list` (
+  `order_line` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `cuantity` int(4) NOT NULL,
+  `invoice_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `user`
+--
+
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `user_email` varchar(50) NOT NULL,
+  `user_pass` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `user`
+--
+
+INSERT INTO `user` (`user_id`, `user_name`, `user_email`, `user_pass`) VALUES
+(1, 'libroloco', 'libroloco@hta.com', 'librolo'),
+(2, 'libretera', 'libretera@htm.com', 'libreta1');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `autor`
+--
+ALTER TABLE `autor`
+  ADD PRIMARY KEY (`autor_id`);
+
+--
+-- Indices de la tabla `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`book_id`),
+  ADD KEY `autor_id` (`autor_id`),
+  ADD KEY `book_price` (`book_price`);
+
+--
+-- Indices de la tabla `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`invoice_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `invoice_amount` (`invoice_amount`);
+
+--
+-- Indices de la tabla `order_list`
+--
+ALTER TABLE `order_list`
+  ADD PRIMARY KEY (`order_line`),
+  ADD KEY `book_id` (`book_id`),
+  ADD KEY `invoice_id` (`invoice_id`);
+
+--
+-- Indices de la tabla `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `autor`
+--
+ALTER TABLE `autor`
+  MODIFY `autor_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `books`
+--
+ALTER TABLE `books`
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `invoice`
+--
+ALTER TABLE `invoice`
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `order_list`
+--
+ALTER TABLE `order_list`
+  MODIFY `order_line` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `user`
+--
+ALTER TABLE `user`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `books`
+--
+ALTER TABLE `books`
+  ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`autor_id`) REFERENCES `autor` (`autor_id`);
+
+--
+-- Filtros para la tabla `invoice`
+--
+ALTER TABLE `invoice`
+  ADD CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Filtros para la tabla `order_list`
+--
+ALTER TABLE `order_list`
+  ADD CONSTRAINT `order_list_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
+  ADD CONSTRAINT `order_list_ibfk_2` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`invoice_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

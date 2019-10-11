@@ -1,0 +1,378 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost
+-- Tiempo de generación: 11-10-2019 a las 13:38:20
+-- Versión del servidor: 10.4.6-MariaDB
+-- Versión de PHP: 7.1.32
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `cul_de_ampolla`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `brand`
+--
+
+CREATE TABLE `brand` (
+  `brand_id` int(3) NOT NULL,
+  `brand_name` varchar(50) NOT NULL,
+  `distributor_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `client`
+--
+
+CREATE TABLE `client` (
+  `client_id` int(11) NOT NULL,
+  `client_name` varchar(25) NOT NULL,
+  `client_surname` varchar(25) NOT NULL,
+  `client_email` varchar(60) NOT NULL,
+  `client_phone` int(11) NOT NULL,
+  `client_ad_street` varchar(100) NOT NULL,
+  `client_ad_number` int(5) NOT NULL,
+  `client_ad_door` int(3) NOT NULL,
+  `client_ad_zip_code` int(7) NOT NULL,
+  `client_ad_city` varchar(35) NOT NULL,
+  `client_ad_region` varchar(35) NOT NULL,
+  `client_ad_country` varchar(35) NOT NULL,
+  `client_reg_date` date NOT NULL DEFAULT current_timestamp(),
+  `refer_client_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `distributor`
+--
+
+CREATE TABLE `distributor` (
+  `distr_id` int(3) NOT NULL,
+  `distr_name` varchar(50) NOT NULL,
+  `ad_street` varchar(100) NOT NULL,
+  `ad_number` int(5) NOT NULL,
+  `ad_door` int(3) NOT NULL,
+  `ad_zip_code` varchar(7) NOT NULL,
+  `ad_city` varchar(35) NOT NULL,
+  `ad_region` varchar(35) NOT NULL,
+  `ad_country` varchar(20) NOT NULL,
+  `phone` int(11) NOT NULL,
+  `fax` int(11) NOT NULL,
+  `distr_nif` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `employee`
+--
+
+CREATE TABLE `employee` (
+  `emp_id` int(3) NOT NULL,
+  `emp_name` varchar(25) NOT NULL,
+  `emp_surname` varchar(25) NOT NULL,
+  `emp_nif` varchar(11) NOT NULL,
+  `emp_ss` varchar(11) NOT NULL,
+  `emp_ad_street` varchar(100) NOT NULL,
+  `emp_ad_number` int(5) NOT NULL,
+  `emp_ad_door` int(3) NOT NULL,
+  `emp_ad_city` int(35) NOT NULL,
+  `emp_ad_zip_code` varchar(11) NOT NULL,
+  `emp_ad_region` varchar(35) NOT NULL,
+  `emp_ad_country` varchar(35) NOT NULL,
+  `emp_phone` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `glass_color`
+--
+
+CREATE TABLE `glass_color` (
+  `glass_color_id` int(3) NOT NULL,
+  `glass_color_name` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `invoice_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `total_amount` int(5) NOT NULL,
+  `invoice_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `item line`
+--
+
+CREATE TABLE `item line` (
+  `item_line_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(5) NOT NULL,
+  `invoice_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mont`
+--
+
+CREATE TABLE `mont` (
+  `mont_id` int(3) NOT NULL,
+  `mont_name` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mont_color`
+--
+
+CREATE TABLE `mont_color` (
+  `color_mont_id` int(3) NOT NULL,
+  `color_mont_name` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `product`
+--
+
+CREATE TABLE `product` (
+  `product_id` int(11) NOT NULL,
+  `model` varchar(50) NOT NULL,
+  `brand_id` int(11) NOT NULL,
+  `grad_l` int(11) NOT NULL,
+  `grad_r` int(11) NOT NULL,
+  `glass_color_l` int(11) NOT NULL,
+  `glass_color_r` int(11) NOT NULL,
+  `mont_type` int(11) NOT NULL,
+  `mont_color` int(11) NOT NULL,
+  `price` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `brand`
+--
+ALTER TABLE `brand`
+  ADD PRIMARY KEY (`brand_id`),
+  ADD KEY `distributor_id` (`distributor_id`);
+
+--
+-- Indices de la tabla `client`
+--
+ALTER TABLE `client`
+  ADD PRIMARY KEY (`client_id`),
+  ADD KEY `refer_client_id` (`refer_client_id`);
+
+--
+-- Indices de la tabla `distributor`
+--
+ALTER TABLE `distributor`
+  ADD PRIMARY KEY (`distr_id`);
+
+--
+-- Indices de la tabla `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`emp_id`);
+
+--
+-- Indices de la tabla `glass_color`
+--
+ALTER TABLE `glass_color`
+  ADD PRIMARY KEY (`glass_color_id`);
+
+--
+-- Indices de la tabla `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`invoice_id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `employee_id` (`employee_id`);
+
+--
+-- Indices de la tabla `item line`
+--
+ALTER TABLE `item line`
+  ADD PRIMARY KEY (`item_line_id`),
+  ADD KEY `invoice_id` (`invoice_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indices de la tabla `mont`
+--
+ALTER TABLE `mont`
+  ADD PRIMARY KEY (`mont_id`);
+
+--
+-- Indices de la tabla `mont_color`
+--
+ALTER TABLE `mont_color`
+  ADD PRIMARY KEY (`color_mont_id`);
+
+--
+-- Indices de la tabla `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `brand_id` (`brand_id`),
+  ADD KEY `grad_l` (`grad_l`),
+  ADD KEY `grad_r` (`grad_r`),
+  ADD KEY `glass_color_r` (`glass_color_r`),
+  ADD KEY `glass_color_l` (`glass_color_l`),
+  ADD KEY `mont_color` (`mont_color`),
+  ADD KEY `brand_id_2` (`brand_id`),
+  ADD KEY `mont_type` (`mont_type`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `brand`
+--
+ALTER TABLE `brand`
+  MODIFY `brand_id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `client`
+--
+ALTER TABLE `client`
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `distributor`
+--
+ALTER TABLE `distributor`
+  MODIFY `distr_id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `emp_id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `glass_color`
+--
+ALTER TABLE `glass_color`
+  MODIFY `glass_color_id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `invoice`
+--
+ALTER TABLE `invoice`
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `item line`
+--
+ALTER TABLE `item line`
+  MODIFY `item_line_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `mont`
+--
+ALTER TABLE `mont`
+  MODIFY `mont_id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `mont_color`
+--
+ALTER TABLE `mont_color`
+  MODIFY `color_mont_id` int(3) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `product`
+--
+ALTER TABLE `product`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `brand`
+--
+ALTER TABLE `brand`
+  ADD CONSTRAINT `brand_ibfk_1` FOREIGN KEY (`distributor_id`) REFERENCES `distributor` (`distr_id`);
+
+--
+-- Filtros para la tabla `client`
+--
+ALTER TABLE `client`
+  ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`refer_client_id`) REFERENCES `client` (`client_id`);
+
+--
+-- Filtros para la tabla `employee`
+--
+ALTER TABLE `employee`
+  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `invoice` (`employee_id`);
+
+--
+-- Filtros para la tabla `glass_color`
+--
+ALTER TABLE `glass_color`
+  ADD CONSTRAINT `glass_color_ibfk_1` FOREIGN KEY (`glass_color_id`) REFERENCES `product` (`glass_color_r`);
+
+--
+-- Filtros para la tabla `invoice`
+--
+ALTER TABLE `invoice`
+  ADD CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`);
+
+--
+-- Filtros para la tabla `item line`
+--
+ALTER TABLE `item line`
+  ADD CONSTRAINT `item line_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`invoice_id`),
+  ADD CONSTRAINT `item line_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
+
+--
+-- Filtros para la tabla `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`glass_color_l`) REFERENCES `glass_color` (`glass_color_id`),
+  ADD CONSTRAINT `product_ibfk_2` FOREIGN KEY (`glass_color_r`) REFERENCES `glass_color` (`glass_color_id`),
+  ADD CONSTRAINT `product_ibfk_3` FOREIGN KEY (`mont_color`) REFERENCES `mont_color` (`color_mont_id`),
+  ADD CONSTRAINT `product_ibfk_4` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`brand_id`),
+  ADD CONSTRAINT `product_ibfk_5` FOREIGN KEY (`mont_type`) REFERENCES `mont` (`mont_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

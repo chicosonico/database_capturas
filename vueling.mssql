@@ -1,0 +1,118 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost
+-- Tiempo de generación: 11-10-2019 a las 13:37:03
+-- Versión del servidor: 10.4.6-MariaDB
+-- Versión de PHP: 7.1.32
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `vueling`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `plane`
+--
+
+CREATE TABLE `plane` (
+  `plane_id` int(10) NOT NULL,
+  `model` varchar(15) NOT NULL,
+  `capacity` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `plane`
+--
+
+INSERT INTO `plane` (`plane_id`, `model`, `capacity`) VALUES
+(1, 'Airbus A319', 144),
+(2, 'Airbus A320', 220),
+(3, 'Airbus A321', 220);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `seats`
+--
+
+CREATE TABLE `seats` (
+  `seat_id` int(11) NOT NULL,
+  `plane_id` int(11) NOT NULL,
+  `seat_code` varchar(7) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `seats`
+--
+
+INSERT INTO `seats` (`seat_id`, `plane_id`, `seat_code`) VALUES
+(1, 1, '001001A'),
+(2, 1, '001001B'),
+(3, 1, '001001C'),
+(4, 1, '001001D'),
+(5, 1, '001001E'),
+(6, 1, '001001F'),
+(7, 1, '001002A'),
+(8, 2, '002001A');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `plane`
+--
+ALTER TABLE `plane`
+  ADD PRIMARY KEY (`plane_id`);
+
+--
+-- Indices de la tabla `seats`
+--
+ALTER TABLE `seats`
+  ADD PRIMARY KEY (`seat_id`),
+  ADD KEY `plane_id` (`plane_id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `plane`
+--
+ALTER TABLE `plane`
+  MODIFY `plane_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `seats`
+--
+ALTER TABLE `seats`
+  MODIFY `seat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `seats`
+--
+ALTER TABLE `seats`
+  ADD CONSTRAINT `seats_ibfk_1` FOREIGN KEY (`plane_id`) REFERENCES `plane` (`plane_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

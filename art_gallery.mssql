@@ -1,0 +1,148 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: localhost
+-- Tiempo de generación: 11-10-2019 a las 13:38:32
+-- Versión del servidor: 10.4.6-MariaDB
+-- Versión de PHP: 7.1.32
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `art_gallery`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `artist`
+--
+
+CREATE TABLE `artist` (
+  `artist_id` int(10) NOT NULL,
+  `artist_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `artist`
+--
+
+INSERT INTO `artist` (`artist_id`, `artist_name`) VALUES
+(1, 'anonim'),
+(3, 'Mark Rothko'),
+(4, 'Pablo Picasso');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cuadro`
+--
+
+CREATE TABLE `cuadro` (
+  `artwork_id` int(11) NOT NULL,
+  `artwork_name` varchar(100) NOT NULL,
+  `artist_id` int(10) NOT NULL,
+  `price` int(11) NOT NULL,
+  `owner_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cuadro`
+--
+
+INSERT INTO `cuadro` (`artwork_id`, `artwork_name`, `artist_id`, `price`, `owner_id`) VALUES
+(1, 'Noche Estrellada', 4, 1500, 3),
+(2, 'Círculos y cuadrados', 3, 3000, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `owner`
+--
+
+CREATE TABLE `owner` (
+  `owner_id` int(11) NOT NULL,
+  `owner_name` varchar(100) NOT NULL,
+  `owner_dni` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `owner`
+--
+
+INSERT INTO `owner` (`owner_id`, `owner_name`, `owner_dni`) VALUES
+(1, 'For Sale', ''),
+(2, 'Carla Benitez', 'X1243561354'),
+(3, 'Julia Albert', '234567234D');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `artist`
+--
+ALTER TABLE `artist`
+  ADD PRIMARY KEY (`artist_id`);
+
+--
+-- Indices de la tabla `cuadro`
+--
+ALTER TABLE `cuadro`
+  ADD PRIMARY KEY (`artwork_id`),
+  ADD KEY `artist_id` (`artist_id`),
+  ADD KEY `owner_id` (`owner_id`);
+
+--
+-- Indices de la tabla `owner`
+--
+ALTER TABLE `owner`
+  ADD PRIMARY KEY (`owner_id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `artist`
+--
+ALTER TABLE `artist`
+  MODIFY `artist_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `cuadro`
+--
+ALTER TABLE `cuadro`
+  MODIFY `artwork_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `owner`
+--
+ALTER TABLE `owner`
+  MODIFY `owner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `cuadro`
+--
+ALTER TABLE `cuadro`
+  ADD CONSTRAINT `cuadro_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`artist_id`),
+  ADD CONSTRAINT `cuadro_ibfk_2` FOREIGN KEY (`owner_id`) REFERENCES `owner` (`owner_id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
